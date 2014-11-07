@@ -36,11 +36,11 @@ $(document).on("pageinit","#page-1",function(e)
         var temp_list = $("#ticketList");
         temp_list.empty();
         Parse.Cloud.run("GetAreaTicket",
-            { areaId: ""+area_id}, 
+            { districtId: ""+area_id}, 
             {
                 success: function(result) 
                 {
-                    temp_list.append("<li>"+"Area : "+ result.areaId+" 白："+result.whiteTicketNum +" \n 藍："+result.blueTicketNum+"</li>");
+                    temp_list.append("<li>"+"District : "+ result.districtId+" 白："+result.ticketNumSeven +" \n 藍："+result.ticketNumSix+"</li>");
                     temp_list.listview("refresh");
                 },
                 error: function(error) 
@@ -49,6 +49,7 @@ $(document).on("pageinit","#page-1",function(e)
                         "code":141,
                         "message":"密碼錯誤  請再次確認投票所編號與密碼"
                     }*/
+                    alert(JSON.stringify(error.message));
                 }
             });  
     }
