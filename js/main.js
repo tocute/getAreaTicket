@@ -40,7 +40,7 @@ $(document).on("pageinit","#page-1",function(e)
             {
                 success: function(result) 
                 {
-                    temp_list.append("<li>"+"District : "+ result.districtId+" 白："+result.ticketNumSeven +" \n 藍："+result.ticketNumSix+"</li>");
+                    temp_list.append("<li>"+"District : "+ result.districtId+" 白："+result.candidate7 +" \n 藍："+result.candidate6+"</li>");
                     temp_list.listview("refresh");
                 },
                 error: function(error) 
@@ -53,7 +53,50 @@ $(document).on("pageinit","#page-1",function(e)
                 }
             });  
     }
+    var onBtnGetDistrict1 = function ()
+    {
+        getTicketDistrict("湖山里",136,137);
+    }
+    
+    var onBtnGetDistrict2 = function ()
+    {
+        getTicketDistrict("天玉里",279,283);
+    }
 
+    var getTicketDistrict = function (districtName,voteHouseMin,voteHouseMax)
+    {
+        var VoteHouseObject = Parse.Object.extend("TicketInfoObject");
+        var query = new Parse.Query(VoteHouseObject);
+        // Restricts to wins <= voteHouseMax
+        query.lessThanOrEqualTo("voteHouseId", voteHouseMax.toString());
+        // Restricts to wins >= voteHouseMin
+        query.greaterThanOrEqualTo("voteHouseId", voteHouseMin.toString());
+ 
+        query.find({
+            success: function(results)
+            {
+                var candidate6 = 0;
+                var candidate7 = 0;
+                for (var i = 0; i < results.length; i++) 
+                { 
+                    candidate6 += parseInt(results[i].get("candidate6"));
+                    candidate7 += parseInt(results[i].get("candidate7"));
+                }
+
+                var temp_list = $("#ticketList");
+                temp_list.empty();
+                temp_list.append("<li>"+districtName+" :  白:"+candidate7 +" \n 藍:"+candidate6+"</li>");
+                temp_list.listview("refresh");
+            },
+            error: function(error) 
+            {
+                alert("Error: " + error.code + " " + error.message);
+            }
+
+        }); 
+    }   
     $("#btn_submit").on("click",onBtnGetTicketClick);
+    $("#btn_district1").on("click",onBtnGetDistrict1);
+    $("#btn_district2").on("click",onBtnGetDistrict2);
 
 });
