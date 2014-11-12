@@ -53,6 +53,32 @@ $(document).on("pageinit","#page-1",function(e)
                 }
             });  
     }
+
+    var onBtnGetAllTicketClick = function (e)
+    {
+        var temp_list = $("#ticketList");
+        temp_list.empty();
+        Parse.Cloud.run("GetAllDistrictTicket",null, 
+            {
+                success: function(result) 
+                {
+                    for(var i = 0; i<result.length; i++)
+                    {
+                        var entiry = result[i];
+                        temp_list.append("<li>"+"District : "+ entiry.districtId+" 白："+entiry.candidate7 +" 藍："+entiry.candidate6+"<br/> 未開票完成: "+entiry.unfinished_district+"  投票所個數: "+entiry.total_count+"</li>");
+                        temp_list.listview("refresh");
+                    }
+                },
+                error: function(error) 
+                {
+                    /*{
+                        "code":141,
+                        "message":"密碼錯誤  請再次確認投票所編號與密碼"
+                    }*/
+                    alert(JSON.stringify(error.message));
+                }
+            });  
+    }
     var onBtnGetDistrict1 = function ()
     {
         getTicketDistrict("湖山里",136,137);
@@ -95,7 +121,7 @@ $(document).on("pageinit","#page-1",function(e)
 
         }); 
     }   
-    $("#btn_submit").on("click",onBtnGetTicketClick);
+    $("#btn_submit").on("click",onBtnGetAllTicketClick);
     $("#btn_district1").on("click",onBtnGetDistrict1);
     $("#btn_district2").on("click",onBtnGetDistrict2);
 
