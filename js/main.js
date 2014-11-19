@@ -65,7 +65,7 @@ $(document).on("pageinit","#page-1",function(e)
                     for(var i = 0; i<result.length; i++)
                     {
                         var entiry = result[i];
-                        temp_list.append("<li>"+"District : "+ entiry.districtId+" 白："+entiry.candidate7 +" 藍："+entiry.candidate6+"<br/> 未開票完成: "+entiry.unfinishedDistrict+"  投票所個數: "+entiry.totalCount+"</li>");
+                        temp_list.append("<li>"+"District : "+ entiry.districtId+" 白："+entiry.candidate7 +" 藍："+entiry.candidate6+"<br/> 未開票完成: "+entiry.unfinishedVoteHouse+"  投票所個數: "+entiry.totalVoteHouseCount+"</li>");
                         temp_list.listview("refresh");
                     }
                 },
@@ -94,9 +94,9 @@ $(document).on("pageinit","#page-1",function(e)
         var VoteHouseObject = Parse.Object.extend("TicketInfoObject");
         var query = new Parse.Query(VoteHouseObject);
         // Restricts to wins <= voteHouseMax
-        query.lessThanOrEqualTo("voteHouseId", voteHouseMax.toString());
+        query.lessThanOrEqualTo("voteHouseId", voteHouseMax);
         // Restricts to wins >= voteHouseMin
-        query.greaterThanOrEqualTo("voteHouseId", voteHouseMin.toString());
+        query.greaterThanOrEqualTo("voteHouseId", voteHouseMin);
  
         query.find({
             success: function(results)
